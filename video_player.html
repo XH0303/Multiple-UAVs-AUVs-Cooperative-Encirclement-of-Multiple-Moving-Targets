@@ -1,0 +1,93 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>Multi-UAV/AUV Encirclement — Video Player</title>
+  <style>
+    :root{font-family: system-ui, -apple-system, "Segoe UI", Roboto, "Helvetica Neue", Arial; background:#0b1020; color:#e6eef8}
+    html,body{height:100%;margin:0}
+    .wrap{min-height:100vh;display:flex;align-items:center;justify-content:center;padding:24px}
+    .player{width:100%;max-width:1000px;background:#071129;border-radius:12px;box-shadow:0 10px 30px rgba(2,6,23,.6);overflow:hidden}
+    .media{position:relative;background:#000}
+    video{display:block;width:100%;height:auto;background:#000}
+    .meta{padding:14px 18px}
+    h1{font-size:18px;margin:0 0 6px}
+    p{margin:0;color:#b6c6d9;font-size:13px}
+    .controls{display:flex;gap:8px;align-items:center;margin-top:10px}
+    .btn{background:#0f1220;border:1px solid rgba(255,255,255,.04);color:#dfeeff;padding:6px 10px;border-radius:8px;cursor:pointer;font-size:13px}
+    .btn:active{transform:translateY(1px)}
+    .small{font-size:13px;padding:6px 8px}
+    .caption{margin-top:10px;font-size:13px;color:#9fb0d1}
+    .note{margin-top:10px;font-size:12px;color:#93a7c6}
+    a.link{color:#8fd1ff;text-decoration:none}
+    @media (max-width:520px){.player{border-radius:8px}}
+  </style>
+</head>
+<body>
+  <div class="wrap">
+    <div class="player" role="region" aria-label="Video player">
+      <div class="media">
+        <video id="video" controls preload="metadata" poster="poster.jpg" multiple>
+          <source src="Multiple targets surrounding control for hetergeneous UAVs-AUVs_1.mp4" type="video/mp4">
+          <source src="Multiple targets surrounding control for hetergeneous UAVs-AUVs_2.mp4" type="video/mp4">
+          <track label="English" kind="subtitles" srclang="en" src="captions.vtt" default>
+          Your browser does not support the <code>video</code> element. You can <a class="link" href="Multiple targets surrounding control for hetergeneous UAVs-AUVs_1.mp4">download the first video</a> or <a class="link" href="Multiple targets surrounding control for hetergeneous UAVs-AUVs_2.mp4">download the second video</a>.
+        </video>
+      </div>
+
+      <div class="meta">
+        <h1>Multi-UAV / Multi-AUV Encirclement — Simulation Videos</h1>
+        <p>These videos demonstrate cooperative encirclement of multiple moving targets in a Simscape 3D scene (cylindrical obstacles, bridge-pier obstacles, and two moving spherical obstacles).</p>
+
+        <div class="controls" aria-hidden="false">
+          <button id="playBtn" class="btn">Play / Pause</button>
+          <button id="muteBtn" class="btn small">Mute</button>
+          <button id="fsBtn" class="btn small">Fullscreen</button>
+          <button id="downloadBtn" class="btn small">Download</button>
+        </div>
+
+        <div class="caption">Tip: Use space to Play/Pause, M to mute/unmute, F for fullscreen.</div>
+        <div class="note">If you publish this file with GitHub Pages, visit <code>https://&lt;your-github-username&gt;.github.io/Multiple-UAVs-AUVs-Cooperative-Encirclement-of-Multiple-Moving-Targets/index.html</code> (replace username as appropriate).</div>
+      </div>
+    </div>
+  </div>
+
+  <script>
+    const video = document.getElementById('video');
+    const playBtn = document.getElementById('playBtn');
+    const muteBtn = document.getElementById('muteBtn');
+    const fsBtn = document.getElementById('fsBtn');
+    const downloadBtn = document.getElementById('downloadBtn');
+
+    playBtn.addEventListener('click', () => {
+      if (video.paused) video.play(); else video.pause();
+    });
+
+    muteBtn.addEventListener('click', () => {
+      video.muted = !video.muted;
+      muteBtn.textContent = video.muted ? 'Unmute' : 'Mute';
+    });
+
+    fsBtn.addEventListener('click', () => {
+      if (document.fullscreenElement) document.exitFullscreen();
+      else video.requestFullscreen().catch(()=>{});
+    });
+
+    downloadBtn.addEventListener('click', () => {
+      const a = document.createElement('a');
+      a.href = video.querySelector('source').src;
+      a.download = '';
+      document.body.appendChild(a);
+      a.click();
+      a.remove();
+    });
+
+    window.addEventListener('keydown', (e) => {
+      if (e.code === 'Space') { e.preventDefault(); if (video.paused) video.play(); else video.pause(); }
+      if (e.key.toLowerCase() === 'm') video.muted = !video.muted;
+      if (e.key.toLowerCase() === 'f') { if (document.fullscreenElement) document.exitFullscreen(); else video.requestFullscreen().catch(()=>{}); }
+    });
+  </script>
+</body>
+</html>
